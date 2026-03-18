@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アルバム | 卒業記念サイト</title>
+  <meta name="description" content="ファンごとのアルバム一覧ページです。" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="page-header">
+      <a class="text-link" href="messages.html">← メッセージへ戻る</a>
+      <h1 id="album-title">アルバム</h1>
+      <p id="album-description">ファンがアップロードした思い出の写真を掲載しています。</p>
+    </header>
+
+    <main>
+      <section id="album-list" class="album-grid" aria-live="polite">
+        <div class="loading-card">アルバムを読み込み中です…</div>
+      </section>
+      <p class="note">画像を追加する場合は、対象ファンのJSONにJPEGパスを追加してください。</p>
+    </main>
+  </div>
+
+  <script>
+    async function loadAlbum() {
+      const albumTitle = document.getElementById('album-title');
+      const albumDescription = document.getElementById('album-description');
+      const albumList = document.getElementById('album-list');
+      const params = new URLSearchParams(window.location.search);
+      const fanId = params.get('fan');
+
+      if (!fanId) {
+        albumList.innerHTML = '<div class="loading-card error">表示するアルバムが指定されていません。</div>';
+        return;
+      }
+
+      try {
+        const fansRes = await fetch('data/fans.json');
+        if (!fansRes.ok) {
+          throw new Error('ファン情報の取得に失敗しました。');
+        }
+
+        const fans = await fansRes.json();
+        const fan = fans.find((item) => item.id === fanId);
+        const fanName = fan ? fan.name : fanId;
+
+        albumTitle.textContent = `${fanName}さんのアルバム`;
+        albumDescription.textContent = `${fanName}さんがアップロードしたJPEG画像の一覧です。`;
+
+        const albumRes = await fetch(`data/albums/${encodeURIComponent(fanId)}.json`);
+        if (!albumRes.ok) {
+          throw new Error('アルバム情報の取得に失敗しました。');
+        }
+
+        const album = await albumRes.json();
+        const images = Array.isArray(album.images) ? album.images : [];
+
+        if (images.length === 0) {
+          albumList.innerHTML = '<div class="loading-card">まだアルバム画像がありません。</div>';
+          return;
+        }
+
+        albumList.innerHTML = images.map((src, index) => {
+          const fileName = src.split('/').pop() || `image-${index + 1}.jpeg`;
+          return `
+            <article class="album-card">
+              <a href="${src}" target="_blank" rel="noopener noreferrer" aria-label="${fanName}さんの画像 ${index + 1} を開く">
+                <img src="${src}" alt="${fanName}さんのアルバム画像 ${index + 1}" loading="lazy" />
+              </a>
+              <p class="album-caption">${fanName}さんの写真 ${index + 1}</p>
+              <p class="album-file">${fileName}</p>
+            </article>
+          `;
+        }).join('');
+      } catch (error) {
+        albumList.innerHTML = '<div class="loading-card error">アルバムの表示に失敗しました。ファイル配置をご確認ください。</div>';
+        console.error(error);
+      }
+    }
+
+    loadAlbum();
+  </script>
+</body>
+</html>
