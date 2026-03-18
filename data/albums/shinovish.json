@@ -1,13 +1,13 @@
 {
-  "fanId": "hiiragi",
+  "fanId": "shinovish",
   "images": [
     {
-      "src": "assets/albums/hiiragi/album-01.jpg",
+      "src": "assets/albums/shinovish/album-01.jpg",
       "alt": "ひいらぎのアルバム画像 1",
       "caption": "album-01.jpg"
     },
     {
-      "src": "assets/albums/hiiragi/album-02.jpg",
+      "src": "assets/albums/shinovish/album-02.jpg",
       "alt": "ひいらぎのアルバム画像 2",
       "caption": "album-02.jpg"
     }
