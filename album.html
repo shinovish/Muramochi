@@ -46,7 +46,6 @@
         const fanName = fan ? fan.name : fanId;
 
         albumTitle.textContent = `${fanName}さんのアルバム`;
-        albumDescription.textContent = `${fanName}さんがアップロードしたJPEG画像の一覧です。`;
 
         const albumRes = await fetch(`data/albums/${encodeURIComponent(fanId)}.json`);
         if (!albumRes.ok) {
