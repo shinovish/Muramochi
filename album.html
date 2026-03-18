@@ -19,7 +19,6 @@
       <section id="album-list" class="album-grid" aria-live="polite">
         <div class="loading-card">アルバムを読み込み中です…</div>
       </section>
-      <p class="note">画像を追加する場合は、対象ファンのJSONにJPEGパスを追加してください。</p>
     </main>
   </div>
 
@@ -69,8 +68,6 @@
               <a href="${src}" target="_blank" rel="noopener noreferrer" aria-label="${fanName}さんの画像 ${index + 1} を開く">
                 <img src="${src}" alt="${fanName}さんのアルバム画像 ${index + 1}" loading="lazy" />
               </a>
-              <p class="album-caption">${fanName}さんの写真 ${index + 1}</p>
-              <p class="album-file">${fileName}</p>
             </article>
           `;
         }).join('');
