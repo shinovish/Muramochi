@@ -4,7 +4,11 @@
     "name": "ひいらぎ"
   },
   {
-    "id": "cat",
-    "name": "ねこ"
-  }
+    "id": "rabbit",
+    "name": "つむ"
+  },
+  {
+    "id": "hanamaru",
+    "name": "はなまるおばけ"
+  },
 ]
